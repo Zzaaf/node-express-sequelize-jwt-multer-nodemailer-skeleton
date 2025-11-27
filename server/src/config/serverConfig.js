@@ -7,7 +7,7 @@ const removeHttpHeader = require('../middleware/removeHttpHeader');
 const cookieParser = require('cookie-parser');
 
 // Создание стрима записи логов
-const accessLogStream = fs.createWriteStream(path.join(__dirname, `../logs/access_${new Date().toLocaleDateString()}.log`), { flags: 'a' })
+const accessLogStream = fs.createWriteStream(path.join(__dirname, '..', 'logs', `access_${new Date().toLocaleDateString('ru-RU')}.log`), { flags: 'a' })
 
 // Создание конфигурации CORS политики
 const corsOptions = {
