@@ -18,7 +18,7 @@ app.use('/', mainRoutes);
 
 // Маршрутизация для SPA
 app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // "Слушаем" порт

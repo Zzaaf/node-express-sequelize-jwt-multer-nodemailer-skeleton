@@ -11,9 +11,9 @@ class MailService {
         const activationLink = `${process.env.CLIENT_URL}/activate/${activationToken}`;
 
         const mailOptions = {
-            from: `"${process.env.SMTP_FROM_NAME || 'JWT Demo App'}" <${process.env.SMTP_USER}>`,
+            from: `"${process.env.SMTP_FROM_NAME || 'JWT Demo Skeleton'}" <${process.env.SMTP_USER}>`,
             to,
-            subject: 'Account Activation - JWT Demo App',
+            subject: 'Account Activation - JWT Demo Skeleton',
             html: this.getActivationEmailTemplate(name, activationLink)
         };
 

@@ -124,7 +124,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your_email@gmail.com
 SMTP_PASSWORD=your_app_password_here
-SMTP_FROM_NAME=JWT Demo App
+SMTP_FROM_NAME=JWT Demo Skeleton
 ```
 
 > **⚠️ Важно:** 
