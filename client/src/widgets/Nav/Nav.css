@@ -1,0 +1,14 @@
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+}
+
+.active {
+    font-weight: 900;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+}
