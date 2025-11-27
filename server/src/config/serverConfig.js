@@ -6,6 +6,11 @@ const morgan = require('morgan');
 const removeHttpHeader = require('../middleware/removeHttpHeader');
 const cookieParser = require('cookie-parser');
 
+// Проверка наличия папки logs
+if (!fs.existsSync(path.join(__dirname, '..', 'logs'))) {
+    fs.mkdirSync(path.join(__dirname, '..', 'logs'));
+}
+
 // Создание стрима записи логов
 const accessLogStream = fs.createWriteStream(path.join(__dirname, '..', 'logs', `access_${new Date().toLocaleDateString('ru-RU')}.log`), { flags: 'a' })
 
