@@ -5,6 +5,7 @@ const fs = require('fs');
 const morgan = require('morgan');
 const removeHttpHeader = require('../middleware/removeHttpHeader');
 const cookieParser = require('cookie-parser');
+const { globalLimiter } = require('./rateLimitConfig');
 
 // Проверка наличия папки logs
 if (!fs.existsSync(path.join(__dirname, '..', 'logs'))) {
@@ -16,11 +17,15 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, '..', 'logs', 
 
 // Создание конфигурации CORS политики
 const corsOptions = {
-    credentials: true, // Важно для работы с cookies
+    origin: ['http://localhost:5173'],
+    credentials: true, // Важно для работы с cookies    
 };
 
 // Определяем конфигурацию всего сервера
 const serverConfig = (app) => {
+    // Rate limiting - защита от DDoS и brute-force атак
+    app.use(globalLimiter);
+
     // Работаем со всеми доменами и портами
     app.use(cors(corsOptions))
 
