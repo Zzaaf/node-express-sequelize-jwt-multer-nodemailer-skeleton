@@ -3,9 +3,10 @@ const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
 const morgan = require('morgan');
-const removeHttpHeader = require('../middleware/removeHttpHeader');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 const { globalLimiter } = require('./rateLimitConfig');
+const { getHelmetConfig } = require('./helmetConfig');
 
 // Проверка наличия папки logs
 if (!fs.existsSync(path.join(__dirname, '..', 'logs'))) {
@@ -23,11 +24,16 @@ const corsOptions = {
 
 // Определяем конфигурацию всего сервера
 const serverConfig = (app) => {
+    // Helmet - установка security HTTP заголовков (должен быть первым)
+    // Защита от XSS, clickjacking, MIME sniffing и др.
+    // Также автоматически удаляет X-Powered-By
+    app.use(helmet(getHelmetConfig()));
+
     // Rate limiting - защита от DDoS и brute-force атак
     app.use(globalLimiter);
 
-    // Работаем со всеми доменами и портами
-    app.use(cors(corsOptions))
+    // CORS - разрешаем запросы с указанных доменов
+    app.use(cors(corsOptions));
 
     // Парсим данные из формы
     app.use(express.urlencoded({ extended: true }));
@@ -42,13 +48,10 @@ const serverConfig = (app) => {
     app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
     // Установка логирования
-    app.use(morgan('combined', { stream: accessLogStream }))
-
-    // Самописная middleware для удаления HTTP заголовка 'X-Powered-By'
-    app.use(removeHttpHeader)
+    app.use(morgan('combined', { stream: accessLogStream }));
 
     // Парсинг кук со стороны клиента
-    app.use(cookieParser())
+    app.use(cookieParser());
 }
 
 module.exports = serverConfig;
