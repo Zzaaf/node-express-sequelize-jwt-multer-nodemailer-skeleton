@@ -1,103 +1,96 @@
-# JWT Authentication Demo Skeleton
+# JWT Auth Skeleton
 
-Демонстрационное приложение с полной реализацией JWT-аутентификации, управлением пользователями и задачами.
+Полностэковое демо-приложение с JWT-аутентификацией, управлением пользователями и задачами. Готов к клонированию и расширению.
 
-## 🚀 Стек технологий
+## Стек технологий
 
-### Frontend
-- **React 19.2.0** - современная библиотека для UI
-- **React Router 7.9.6** - декларативная маршрутизация
-- **Axios 1.13.2** - HTTP-клиент с interceptors
-- **Tailwind CSS 4** - utility-first CSS framework (через CDN)
-- **Vite 7.2.2** - быстрый сборщик и dev-сервер
-- **ESLint 9** - линтинг и проверка кода
+### Frontend (`client/`)
+| | |
+|---|---|
+| **React 19** + **TypeScript 5.8** | UI + строгая типизация |
+| **React Router 7** | Клиентская маршрутизация (SPA) |
+| **Vite 8.1.5** + SWC | Сборщик и dev-сервер |
+| **Axios 1.13** | HTTP-клиент с interceptors |
+| **Tailwind CSS 4** | Utility-first CSS (CDN) |
+| **tsx 4.19** | Транспилятор TypeScript |
 
-### Backend
-- **Node.js + Express 5.1.0** - серверный фреймворк
-- **PostgreSQL + Sequelize 6.37.7** - база данных и ORM
-- **JWT (jsonwebtoken 9.0.2)** - токены для аутентификации
-- **bcrypt 6.0.0** - хеширование паролей (10 раундов)
-- **Nodemailer (latest)** - отправка email (активация аккаунта)
-- **UUID v4** - генерация уникальных токенов
-- **Multer 2.0.2** - загрузка файлов (аватары)
-- **Morgan 1.10.1** - логирование HTTP запросов
-- **Cookie-parser 1.4.7** - работа с cookies
-- **CORS 2.8.5** - Cross-Origin Resource Sharing
+### Backend (`server/`)
+| | |
+|---|---|
+| **Node.js + Express 5** | HTTP-фреймворк |
+| **PostgreSQL + Sequelize 6** | БД и ORM |
+| **JWT** | Access (3 мин) + Refresh (24 ч) токены |
+| **bcrypt** | Хеширование паролей (10 раундов) |
+| **Nodemailer** | Email-активация аккаунта |
+| **Multer** | Загрузка аватаров |
+| **Helmet** | Security HTTP-заголовки |
+| **express-rate-limit** | Защита от DDoS / brute-force |
 
-## 📋 Реализованный функционал
+## Реализованный функционал
 
-### Аутентификация и безопасность
-- ✅ Регистрация пользователей с валидацией
-- ✅ **Email-активация аккаунта через Nodemailer**
-- ✅ Красивое HTML письмо со ссылкой активации
-- ✅ Уникальные токены активации (UUID v4)
-- ✅ Проверка активации при входе
-- ✅ Авторизация с JWT токенами (access + refresh)
-- ✅ Автоматическое обновление токенов через axios interceptors
-- ✅ Refresh токены в httpOnly cookies (защита от XSS)
-- ✅ Выход из системы с очисткой cookies
-- ✅ AuthGuard и PublicGuard для защиты роутов
-- ✅ Middleware для проверки владения ресурсами
+### Аутентификация
+- Регистрация с email-активацией (Nodemailer, HTML-письмо)
+- Вход только для активированных аккаунтов
+- JWT: Access-токен в памяти, Refresh-токен в httpOnly cookie
+- Автоматическое обновление токенов через axios interceptors
+- AuthGuard / PublicGuard — защита роутов (HOC)
 
-### Управление пользователями
-- ✅ Просмотр списка всех пользователей с аватарами
-- ✅ Просмотр детального профиля пользователя
-- ✅ Редактирование своего профиля (имя, email)
-- ✅ Загрузка и обновление аватара (до 1 МБ)
-- ✅ Автоматическая генерация аватара с первой буквой имени
-- ✅ Превью изображения перед загрузкой
+### Пользователи
+- Список всех пользователей с аватарами
+- Просмотр профиля любого пользователя
+- Редактирование своего профиля (имя, email)
+- Загрузка и обновление аватара (превью перед отправкой)
+- Градиентный placeholder-аватар с инициалами
 
-### Управление задачами
-- ✅ Просмотр всех задач в системе
-- ✅ Страница "Мои задачи" с личными задачами пользователя
-- ✅ Создание новых задач
-- ✅ Редактирование задач (только владелец)
-- ✅ Удаление задач (только владелец)
-- ✅ Переключение статуса задачи через чекбокс
-- ✅ Статистика задач (всего/выполнено/в процессе)
-- ✅ Визуальное отображение выполненных задач (зачеркнутый текст)
+### Задачи
+- Общая доска задач (все пользователи)
+- Личная страница «Мои задачи» со статистикой
+- Создание, редактирование (inline), удаление, смена статуса
+- Защита: изменять можно только свои задачи (verifyTaskOwner)
 
 ### UI/UX
-- ✅ Современный, красивый UI с Tailwind CSS v4
-- ✅ Полностью адаптивный дизайн (mobile-first)
-- ✅ Стильная страница 404 с градиентами, анимациями и популярными ссылками
-- ✅ Интерактивные формы с валидацией в реальном времени
-- ✅ Loading состояния для всех асинхронных операций
-- ✅ Уведомления об ошибках и успешных операциях
-- ✅ Плавные анимации и переходы
-- ✅ Градиентные аватары для пользователей без фото
+- Кастомная дизайн-система (CSS-переменные, тёмная тема)
+- Адаптивная вёрстка (mobile-first)
+- Динамический `<title>` на каждой странице
+- Loading-спиннеры, flash-уведомления, анимации появления
 
-### Архитектура
-- ✅ Feature-Sliced Design на фронтенде
-- ✅ MVC паттерн на бэкенде
-- ✅ Разделение на слои (entities, features, pages, widgets, shared)
-- ✅ API классы для инкапсуляции запросов
-- ✅ Централизованная обработка ошибок
-- ✅ Унифицированный формат ответов API
+## Архитектура клиента (Feature-Sliced Design)
 
-## 🛠️ Установка и запуск
+```
+client/src/
+├── app/         # Роутинг, глобальное состояние
+├── entities/    # API-классы: AuthApi, UserApi, TaskApi
+├── features/    # SignInForm, SignUpForm
+├── pages/       # 10 страниц приложения
+├── widgets/     # Nav, UserList
+└── shared/
+    ├── types/   # User, Task, ApiResponse<T>, AuthData
+    ├── lib/     # axiosInstance, setAccessToken, useTitle
+    ├── ui/      # Icon
+    └── hocs/    # AuthGuard, PublicGuard
+```
 
-### 1. Клонирование репозитория
+Импорты через алиас `@/` (`@/entities`, `@/shared/lib`, …).  
+Каждый слой имеет barrel-файл `index.ts`.
+
+## Быстрый старт (локально)
+
+### 1. Клонирование
 
 ```bash
 git clone <repository-url>
-cd code
+cd jwt-auth-skeleton
 ```
 
-### 2. Настройка переменных окружения
+### 2. Переменные окружения
 
-#### Сервер (server/.env)
-Создайте файл `.env` в папке `server`:
-
+**`server/.env`**
 ```env
-# Сервер
 PORT=4000
 NODE_ENV=development
-
-# URL клиента (для CORS)
 CLIENT_URL=http://localhost:5173
 
-# База данных PostgreSQL
+# PostgreSQL
 DB_NAME=jwt_demo_db
 DB_USER=postgres
 DB_PASSWORD=postgres
@@ -105,521 +98,137 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_DIALECT=postgres
 
-# JWT секретные ключи (измените в production!)
-SECRET_ACCESS_TOKEN=your_secret_access_token_key_change_in_production
-SECRET_REFRESH_TOKEN=your_secret_refresh_token_key_change_in_production
+# JWT (смените в production!)
+SECRET_ACCESS_TOKEN=change_me_in_production
+SECRET_REFRESH_TOKEN=change_me_in_production
 
-# SMTP конфигурация для отправки писем
-# Для Gmail используйте App Password (не обычный пароль):
-# 1. Включите двухфакторную аутентификацию
-# 2. Перейдите: https://myaccount.google.com/apppasswords
-# 3. Создайте App Password для приложения
+# SMTP
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your_email@gmail.com
-SMTP_PASSWORD=your_app_password_here
-SMTP_FROM_NAME=JWT Demo Skeleton
+SMTP_PASSWORD=your_app_password
+SMTP_FROM_NAME=JWT Auth Skeleton
 ```
 
-> **⚠️ Важно:** 
-> - В production обязательно смените секретные ключи на длинные случайные строки!
-> - Для Gmail используйте App Password, а не обычный пароль аккаунта
-> - Ссылка для создания App Password: https://myaccount.google.com/apppasswords
-
-#### Клиент (client/.env)
-Создайте файл `.env` в папке `client`:
-
+**`client/.env`**
 ```env
-# API сервера
 VITE_API_URL=http://localhost:4000/api
-
-# URL сервера для загрузки файлов (аватары)
 VITE_SERVER_URL=http://localhost:4000
 ```
 
-### 3. Установка зависимостей
-
-#### Сервер
-```bash
-cd server
-npm install
-```
-
-#### Клиент
-```bash
-cd client
-npm install
-```
-
-### 4. Настройка базы данных
+### 3. Установка и запуск
 
 ```bash
-cd server
-
-# Создать базу данных
+# Сервер
+cd server && npm install
 npm run db:create
-
-# Запустить миграции
 npm run db:migrate
+npm run dev          # http://localhost:4000
+
+# Клиент (отдельный терминал)
+cd client && npm install
+npm run dev          # http://localhost:5173
 ```
 
-### 5. Запуск приложения
+## Деплой на Render.com
 
-#### Запуск сервера (в одном терминале)
+Проект готов к деплою как единый **Web Service** (сервер отдаёт сборку React в production).
+
+### Шаги
+
+1. Создайте **PostgreSQL** базу данных на Render (Database → New PostgreSQL)
+2. Создайте **Web Service** из репозитория
+3. Укажите настройки:
+
+| Параметр | Значение |
+|----------|----------|
+| **Root Directory** | *(пусто — корень репозитория)* |
+| **Build Command** | `npm run build` |
+| **Start Command** | `npm start` |
+| **Node Version** | `18` или выше |
+
+4. Добавьте переменные окружения в Web Service → Environment:
+
+| Переменная | Описание |
+|---|---|
+| `NODE_ENV` | `production` |
+| `CLIENT_URL` | URL вашего сервиса на Render |
+| `DATABASE_URL` | (или `DB_*` по отдельности) |
+| `SECRET_ACCESS_TOKEN` | Случайная строка ≥ 32 символов |
+| `SECRET_REFRESH_TOKEN` | Случайная строка ≥ 32 символов |
+| `SMTP_*` | Ваши SMTP-настройки |
+
+> **Как работает:** `npm run build` устанавливает зависимости и собирает React-приложение в `client/dist/`. В production-режиме сервер раздаёт эту папку как статику и обрабатывает все неизвестные роуты через `index.html` (SPA catch-all).
+
+## API Endpoints
+
+Базовый путь: `/api`
+
+### Auth
+| Метод | Endpoint | Описание |
+|-------|----------|----------|
+| POST | `/auth/signUp` | Регистрация + письмо активации |
+| GET | `/auth/activate/:token` | Активация аккаунта |
+| POST | `/auth/signIn` | Вход |
+| GET | `/auth/refreshTokens` | Обновление токенов |
+| DELETE | `/auth/signOut` | Выход |
+
+### Users
+| Метод | Endpoint | Описание |
+|-------|----------|----------|
+| GET | `/users` | Все пользователи |
+| GET | `/users/:id` | Пользователь по ID |
+| PUT | `/users/:id` | Обновить профиль 🔒 |
+| PUT | `/users/:id/avatar` | Загрузить аватар 🔒 |
+
+### Tasks
+| Метод | Endpoint | Описание |
+|-------|----------|----------|
+| GET | `/tasks` | Все задачи |
+| GET | `/tasks/user/:userId` | Задачи пользователя |
+| POST | `/tasks` | Создать задачу 🔒 |
+| PUT | `/tasks/:id` | Обновить задачу 🔒👤 |
+| DELETE | `/tasks/:id` | Удалить задачу 🔒👤 |
+
+> 🔒 — требует Access Token · 👤 — только владелец
+
+## Скрипты
+
+### Корень (для деплоя)
 ```bash
-cd server
-npm run dev
-# Сервер запустится на http://localhost:4000
+npm run build       # install:server + install:client + build:client
+npm start           # запуск сервера (production)
 ```
-
-#### Запуск клиента (в другом терминале)
-```bash
-cd client
-npm run dev
-# Клиент запустится на http://localhost:5173
-```
-
-## 📁 Структура проекта
-
-### Client (Frontend) - Feature-Sliced Design
-```
-client/src/
-├── app/                      # Главное приложение
-│   └── App.jsx              # Роутинг и состояние пользователя
-├── entities/                # Бизнес-сущности и API
-│   ├── AuthApi.js           # API аутентификации
-│   ├── UserApi.js           # API пользователей
-│   └── TaskApi.js           # API задач
-├── features/                # Фичи (формы, функционал)
-│   ├── SignInForm/          # Форма входа
-│   └── SignUpForm/          # Форма регистрации
-├── pages/                   # Страницы приложения
-│   ├── HomePage/            # Главная страница
-│   ├── SignInPage/          # Страница входа
-│   ├── SignUpPage/          # Страница регистрации
-│   ├── UsersPage/           # Список пользователей
-│   ├── CurrentUserPage/     # Просмотр пользователя
-│   ├── ProfilePage/         # Редактирование профиля
-│   ├── TasksPage/           # Все задачи
-│   └── MyTasksPage/         # Мои задачи
-├── widgets/                 # Составные UI блоки
-│   ├── Nav/                 # Навигационное меню
-│   └── UserList/            # Список пользователей
-├── shared/                  # Переиспользуемый код
-│   ├── hocs/                # Higher-Order Components
-│   │   ├── AuthGuard.jsx    # Защита приватных роутов
-│   │   └── PublicGuard.jsx  # Защита публичных роутов
-│   ├── lib/                 # Библиотеки и утилиты
-│   │   └── axiosInstance.js # Настроенный axios
-│   └── ui/                  # UI компоненты
-│       └── Btn/             # Компонент кнопки
-└── main.jsx                 # Точка входа
-```
-
-### Server (Backend) - MVC Pattern
-```
-server/src/
-├── app.js                   # Точка входа приложения
-├── config/                  # Конфигурации
-│   ├── serverConfig.js      # Express и middleware
-│   ├── cookieConfig.js      # Настройки cookies
-│   ├── jwtConfig.js         # Время жизни токенов
-│   ├── mailConfig.js        # Nodemailer для email
-│   └── uploadConfig.js      # Multer для файлов
-├── controllers/             # Контроллеры (обработка запросов)
-│   ├── user.controller.js   # Auth и пользователи
-│   └── task.controller.js   # Задачи
-├── services/                # Сервисы (бизнес-логика)
-│   ├── user.service.js      # Логика пользователей
-│   ├── task.service.js      # Логика задач
-│   └── mail.service.js      # Отправка email
-├── routes/                  # Маршруты API
-│   ├── api.routes.js        # Главный API роутер
-│   ├── auth.routes.js       # Аутентификация
-│   ├── users.routes.js      # Пользователи
-│   ├── tasks.routes.js      # Задачи
-│   ├── static.routes.js     # Статические файлы
-│   └── main.routes.js       # Главный роутер
-├── middleware/              # Middleware
-│   ├── verifyAccessToken.js    # Проверка access token
-│   ├── verifyRefreshToken.js   # Проверка refresh token
-│   ├── verifyTaskOwner.js      # Проверка владения задачей
-│   └── removeHttpHeader.js     # Удаление X-Powered-By
-├── db/                      # База данных
-│   ├── models/              # Модели Sequelize
-│   │   ├── user.js          # Модель User
-│   │   └── task.js          # Модель Task
-│   ├── migrations/          # Миграции БД
-│   │   ├── create-user.js
-│   │   ├── create-task.js
-│   │   └── add-avatar-to-users.js
-│   └── config/
-│       └── database.json    # Конфигурация БД
-├── utils/                   # Утилиты
-│   ├── formatResponse.js    # Форматирование ответов
-│   └── generateJWTTokens.js # Генерация токенов
-├── logs/                    # Логи (создаются автоматически)
-├── uploads/                 # Загруженные файлы (аватары)
-└── public/                  # Статические файлы
-    ├── index.html
-    ├── css/
-    └── js/
-```
-
-## 🔐 Безопасность
-
-### Хеширование паролей
-- Использует **bcrypt** с 10 раундами соли
-- Автоматическое хеширование через `beforeCreate` hook в модели User
-- Пароли никогда не возвращаются в ответах API
-
-### Валидация паролей
-Пароль должен содержать:
-- ✅ Минимум 8 символов
-- ✅ Хотя бы одну заглавную букву (A-Z)
-- ✅ Хотя бы одну строчную букву (a-z)
-- ✅ Хотя бы одну цифру (0-9)
-- ✅ Хотя бы один специальный символ (!@#$%^&*()-,.?":{}|<>)
-
-### JWT Токены
-**Время жизни:**
-- **Access Token:** 3 минуты (хранится в памяти клиента)
-- **Refresh Token:** 24 часа (хранится в httpOnly cookies)
-
-**Безопасность токенов:**
-- Refresh токен в httpOnly cookie (защита от XSS атак)
-- Access токен передается в заголовке `Authorization: Bearer <token>`
-- Автоматическое обновление токенов через axios interceptors
-- При истечении access токена клиент автоматически обновляет его через refresh токен
-
-### CORS
-- Настроен для разрешенных origins (CLIENT_URL)
-- Credentials: true (для передачи cookies)
-- Защита от неавторизованных cross-origin запросов
-
-### Middleware защита
-- `verifyAccessToken` - проверка авторизации
-- `verifyTaskOwner` - проверка владения ресурсом
-- Удаление заголовка `X-Powered-By` для скрытия технологий
-
-### Загрузка файлов
-- Ограничение размера: 1 МБ
-- Проверка MIME-типов (только изображения)
-- Безопасное именование файлов (timestamp + random)
-- Изоляция от исполняемых файлов
-
-## 📡 API Endpoints
-
-Базовый путь: `http://localhost:4000/api`
-
-### Authentication (`/api/auth`)
-
-| Метод | Endpoint | Описание | Защита | Body |
-|-------|----------|----------|--------|------|
-| POST | `/signUp` | Регистрация (отправка email) | - | `{ name, email, password }` |
-| GET | `/activate/:token` | Активация аккаунта | - | `token` в URL |
-| POST | `/signIn` | Вход (только для активированных) | - | `{ email, password }` |
-| GET | `/refreshTokens` | Обновление токенов | refresh cookie | - |
-| DELETE | `/signOut` | Выход из системы | - | - |
-
-**Процесс регистрации и активации:**
-1. 📝 Пользователь регистрируется на `/signUp`
-2. 💾 Аккаунт создаётся с `isActivated: false` и уникальным `activationToken`
-3. 📧 На email автоматически отправляется красивое письмо со ссылкой активации
-4. ✅ Пользователь видит зелёное сообщение: "Registration successful! Check your email..."
-5. ⏱️ Автоматический редирект на `/signIn` через 5 секунд
-6. ✉️ Пользователь открывает email и переходит по ссылке `CLIENT_URL/activate/:token`
-7. 🔄 Страница `/activate/:token` отправляет GET запрос на сервер
-8. ✅ Сервер активирует аккаунт (`isActivated = true`) и возвращает токены
-9. 🎉 Пользователь автоматически входит и редиректится на главную
-10. 🔐 Теперь можно входить через `/signIn` (проверка `isActivated`)
-
-**Защита:**
-- ❌ Попытка входа без активации → ошибка 403 "Account is not activated"
-- ❌ Повторная активация → ошибка 400 "Already activated"
-- ❌ Неверный токен → ошибка 404 "Invalid token"
-
-### Users (`/api/users`)
-
-| Метод | Endpoint | Описание | Защита | Body |
-|-------|----------|----------|--------|------|
-| GET | `/` | Список всех пользователей | - | - |
-| GET | `/:id` | Пользователь по ID | - | - |
-| PUT | `/:id` | Обновить профиль | Access Token | `{ name, email }` |
-| PUT | `/:id/avatar` | Загрузить аватар | Access Token | FormData: `avatar` |
-| DELETE | `/:id` | Удалить пользователя | - | - |
-
-### Tasks (`/api/tasks`)
-
-| Метод | Endpoint | Описание | Защита | Body |
-|-------|----------|----------|--------|------|
-| GET | `/` | Список всех задач | - | - |
-| GET | `/user/:userId` | Задачи пользователя | - | - |
-| GET | `/:id` | Задача по ID | - | - |
-| POST | `/` | Создать задачу | Access Token | `{ title, status, user_id }` |
-| PUT | `/:id` | Обновить задачу | Access Token + Owner | `{ title?, status? }` |
-| DELETE | `/:id` | Удалить задачу | Access Token + Owner | - |
-
-**Примечание:** Owner - означает, что требуется проверка владения ресурсом через `verifyTaskOwner` middleware.
-
-## 🎨 UI/UX Особенности
-
-### Дизайн
-- 🎨 Современный минималистичный дизайн с Tailwind CSS v4
-- 📱 Полностью адаптивная вёрстка (mobile-first подход)
-- 🎭 Градиентные аватары для пользователей без фото
-- 🌈 Согласованная цветовая палитра (indigo как primary)
-- ✨ Плавные hover эффекты и transitions
-
-### Интерактивность
-- ⏳ Loading состояния для всех асинхронных операций
-- ❌ Красивые уведомления об ошибках (красные баннеры)
-- ✅ Уведомления об успешных операциях (зеленые баннеры)
-- 🔘 Интерактивные кнопки с disabled состояниями
-- 📝 Формы с валидацией и feedback
-
-### Компоненты
-- 🖼️ Превью изображения перед загрузкой аватара
-- 📊 Статистика задач с красивыми метриками
-- ☑️ Чекбоксы для переключения статуса задач
-- 🎯 Зачеркнутый текст для выполненных задач
-- 🃏 Карточки пользователей с аватарами и информацией
-
-### Навигация
-- 🧭 Адаптивное меню навигации
-- 🔐 Условное отображение пунктов (авторизован/нет)
-- 🎨 Активные состояния для текущей страницы
-- 📱 Mobile-friendly навигация
-
-### Формы
-- 📋 Валидация в реальном времени
-- 🔒 Безопасные поля пароля
-- 📧 Проверка email формата
-- 💾 Автосохранение состояния при ошибках
-- 🔄 Редактирование inline для задач
-
-## 📝 Скрипты
 
 ### Server
 ```bash
-npm start          # Запуск сервера
-npm run dev        # Запуск с hot-reload
-npm run db:create  # Создать БД
-npm run db:migrate # Запустить миграции
-npm run db:drop    # Удалить БД
+npm run dev         # node --watch
+npm start           # node src/app.js
+npm run db:create   # создать БД
+npm run db:migrate  # сбросить и применить все миграции
+npm run db:drop     # удалить БД
 ```
 
 ### Client
 ```bash
-npm run dev        # Запуск dev-сервера
-npm run build      # Сборка для production
-npm run preview    # Просмотр production сборки
-npm run lint       # Проверка линтером
+npm run dev         # Vite dev-сервер
+npm run build       # tsc + vite build
+npm run typecheck   # проверка типов без сборки
+npm run preview     # просмотр production-сборки
+npm run lint        # ESLint
 ```
 
-## 🌟 Дополнительные возможности
+## Безопасность
 
-### Feature-Sliced Design на фронтенде
-Проект следует современной методологии FSD для масштабируемости:
-- **app** - инициализация приложения
-- **entities** - бизнес-сущности и API
-- **features** - функциональные возможности
-- **pages** - страницы приложения
-- **widgets** - составные UI блоки
-- **shared** - переиспользуемый код
+- **Helmet** — CSP, HSTS, X-Frame-Options и другие заголовки
+- **Rate Limiting** — защита от перебора и DDoS
+- **bcrypt** (10 раундов) — хеширование паролей
+- **httpOnly cookies** — Refresh токен недоступен для JS (защита от XSS)
+- **verifyTaskOwner** — проверка владения ресурсом
+- **CORS** — только разрешённые origins из `CLIENT_URL`
 
-### API классы
-Все запросы инкапсулированы в классы (AuthApi, UserApi, TaskApi) для удобства использования и типизации.
+## Системные требования
 
-### Guards (HOCs)
-- **AuthGuard** - защита приватных роутов (редирект на /signIn)
-- **PublicGuard** - защита публичных роутов (редирект на /)
-
-### Email-уведомления (Nodemailer)
-**Активация аккаунта:**
-- 📧 Автоматическая отправка письма при регистрации
-- 🎨 Красивый HTML шаблон с градиентами и адаптивным дизайном
-- 🔗 Уникальная ссылка активации (UUID v4)
-- ⏱️ Токен хранится в БД до активации
-- 🔒 Защита от регистрации с чужими email
-
-**Поддерживаемые SMTP:**
-- Gmail (с App Password)
-- Yandex Mail
-- Mail.ru
-- Любой custom SMTP сервер
-
-**Проверка при запуске:**
-- Автоматическая проверка SMTP подключения
-- Логирование успешных/неудачных отправок
-
-### Централизованная обработка ошибок
-Axios interceptors автоматически:
-- Добавляют токены в заголовки
-- Обновляют истекшие токены
-- Редиректят на вход при неудаче
-- Обрабатывают сетевые ошибки
-
-### Логирование на сервере
-- Все HTTP запросы логируются через Morgan
-- Логи сохраняются в файлы с датой
-- Формат Combined (Apache-style)
-
-### Загрузка файлов
-- Multer для обработки multipart/form-data
-- Проверка типов и размеров файлов
-- Безопасное хранение в uploads/
-
-## 🐛 Устранение проблем
-
-### База данных не подключается
-1. Убедитесь, что PostgreSQL установлен и запущен
-   ```bash
-   # Windows
-   net start postgresql-x64-[version]
-   
-   # Linux/Mac
-   sudo service postgresql start
-   ```
-2. Проверьте правильность данных в `server/.env` файле
-3. Создайте базу данных:
-   ```bash
-   cd server
-   npm run db:create
-   npm run db:migrate
-   ```
-
-### CORS ошибки
-1. Убедитесь, что в `server/.env` правильно указан `CLIENT_URL`
-2. Проверьте, что сервер и клиент запущены на правильных портах
-3. Очистите кэш браузера
-
-### Токены не обновляются
-1. Проверьте, что cookies разрешены в браузере
-2. Убедитесь, что `withCredentials: true` в axios
-3. Проверьте, что refresh token не истек (24 часа)
-4. Проверьте консоль браузера на наличие ошибок
-
-### Аватары не загружаются
-1. Убедитесь, что папка `server/src/uploads/` существует
-2. Проверьте права на запись в папку
-3. Проверьте размер файла (не более 1 МБ)
-4. Убедитесь, что `VITE_SERVER_URL` правильно настроен в `client/.env`
-
-### Ошибка "Module not found"
-1. Удалите `node_modules` и `package-lock.json`
-2. Выполните `npm install` заново
-3. Убедитесь, что используется правильная версия Node.js (v18+)
-
-### Сервер не запускается
-1. Проверьте, что порт 4000 не занят другим процессом
-2. Убедитесь, что все переменные окружения установлены
-3. Проверьте логи на наличие ошибок
-
-### Миграции не применяются
-1. Убедитесь, что база данных существует
-2. Проверьте подключение к БД
-3. Попробуйте откатить и применить заново:
-   ```bash
-   npx sequelize db:migrate:undo:all
-   npm run db:migrate
-   ```
-
-### Email не отправляется
-1. **Проверьте SMTP настройки в `.env`**
-2. **Для Gmail:**
-   - Включите двухфакторную аутентификацию
-   - Создайте App Password: https://myaccount.google.com/apppasswords
-   - Используйте App Password вместо обычного пароля
-3. **Проверьте логи сервера** - при запуске должно быть "✅ SMTP server is ready"
-4. **Проверьте спам** - письмо могло попасть в спам
-5. **Тестовая отправка:**
-   - Используйте метод `sendTestMail()` из `mail.service.js`
-
-### Не могу войти после регистрации
-1. **Проверьте email** - аккаунт нужно активировать
-2. Перейдите по ссылке в письме
-3. Если письмо не пришло:
-   - Проверьте спам
-   - Проверьте SMTP настройки
-   - Посмотрите логи сервера
-4. **Временное решение для разработки:**
-   - В БД вручную установите `isActivated = true` для пользователя
-
-## 🧪 Тестирование Email-активации
-
-### Быстрый тест:
-
-1. **Настройте SMTP в `server/.env`** (см. выше)
-2. **Зарегистрируйтесь** на http://localhost:5173/signUp
-   - Используйте **реальный email**!
-3. **Проверьте логи сервера:**
-   ```
-   ✅ SMTP server is ready to send emails
-   ✅ Activation email sent to your_email@...
-   ```
-4. **Откройте email** (проверьте спам!)
-5. **Нажмите "Активировать аккаунт"**
-6. **Проверьте:**
-   - ✅ Страница активации показывает "Account Activated! 🎉"
-   - ✅ Вы автоматически вошли (имя в навигации)
-   - ✅ Можете зайти в `/profile` и `/my-tasks`
-
-### Проверка в БД:
-
-```sql
--- До активации
-SELECT id, name, email, "isActivated", "activationToken" FROM "Users";
--- isActivated = false, activationToken = uuid
-
--- После активации
--- isActivated = true, activationToken = null
-```
-
-### Тестирование ошибок:
-
-- **Попытка входа БЕЗ активации:**
-  - ❌ Ошибка 403: "Account is not activated"
-  - 📧 Подсказка: "Please check your email..."
-
-- **Повторная активация:**
-  - ❌ Ошибка 400: "Account is already activated"
-
-- **Неверный токен:**
-  - ❌ Ошибка 404: "Invalid or expired activation token"
-
-## 💻 Системные требования
-
-### Для разработки
-- **Node.js:** v18.0.0 или выше
-- **npm:** v9.0.0 или выше
-- **PostgreSQL:** v14.0 или выше
-- **Git:** для клонирования репозитория
-
-### Рекомендуемые расширения VSCode
-- ESLint
-- Prettier
-- Tailwind CSS IntelliSense
-- PostgreSQL (для работы с БД)
-
-## 🔗 Полезные ссылки
-
-### Документация технологий
-- [React 19 Documentation](https://react.dev/)
-- [React Router 7](https://reactrouter.com/)
-- [Express.js](https://expressjs.com/)
-- [Sequelize ORM](https://sequelize.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [JWT.io](https://jwt.io/)
-
-### Архитектурные паттерны
-- [Feature-Sliced Design](https://feature-sliced.design/)
-- [MVC Pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
-
-## 📊 Статистика проекта
-
-- **Версия:** 1.0.0
-- **Язык:** JavaScript (ES6+)
-- **Архитектура:** Feature-Sliced Design (Frontend) + MVC (Backend)
-- **База данных:** PostgreSQL с Sequelize ORM
-- **Аутентификация:** JWT (Access + Refresh tokens)
+- **Node.js** ≥ 18.0.0
+- **npm** ≥ 9.0.0
+- **PostgreSQL** ≥ 14.0

@@ -14,7 +14,7 @@ class MailService {
             from: `"${process.env.SMTP_FROM_NAME || 'JWT Demo Skeleton'}" <${process.env.SMTP_USER}>`,
             to,
             subject: 'Account Activation - JWT Demo Skeleton',
-            html: this.getActivationEmailTemplate(name, activationLink)
+            html: this.getActivationEmailTemplate(name, activationLink),
         };
 
         try {
@@ -206,10 +206,7 @@ class MailService {
             from: `"${process.env.SMTP_FROM_NAME || 'JWT Demo Skeleton'}" <${process.env.SMTP_USER}>`,
             to,
             subject: 'Test Email - JWT Demo Skeleton',
-            html: `
-                <h2>Test Successful! ✅</h2>
-                <p>Email settings are working correctly.</p>
-            `
+            html: `<h2>Test Successful! ✅</h2><p>Email settings are working correctly.</p>`,
         };
 
         try {

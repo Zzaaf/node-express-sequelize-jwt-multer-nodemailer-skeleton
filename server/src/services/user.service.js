@@ -6,7 +6,6 @@ class UserService {
     static getAllUsersWithoutMeta() {
         return User.findAll()
             .then((arr) => arr.map(el => el.get()))
-            .catch((err) => err.message)
     }
 
     // нужно чтобы вернул пользователя по email

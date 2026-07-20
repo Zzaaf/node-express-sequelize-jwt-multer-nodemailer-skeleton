@@ -1,54 +1,67 @@
 # Client (Frontend)
 
-React-приложение с современным UI на Tailwind CSS, организованное по Feature-Sliced Design.
+React-приложение на **TypeScript** с современным UI, организованное по Feature-Sliced Design.
 
 ## Технологии
 
-- **React 19.2.0** - современная библиотека для UI
-- **React Router 7.9.6** - декларативная маршрутизация
-- **Axios 1.13.2** - HTTP-клиент с interceptors
-- **Tailwind CSS 4** - utility-first CSS framework (через CDN)
-- **Vite 7.2.2** - быстрый сборщик и dev-сервер
-- **ESLint 9** - линтинг кода
+- **React 19.2.0** — UI-библиотека
+- **React Router 7.9.6** — декларативная маршрутизация
+- **TypeScript 5.8** — строгая типизация
+- **Axios 1.13.2** — HTTP-клиент с interceptors
+- **Tailwind CSS 4** — utility-first CSS (через CDN)
+- **Vite 8.1.5** — сборщик и dev-сервер (SWC)
+- **tsx 4.19** — транспилятор TypeScript для скриптов
+- **ESLint 9** — линтинг кода
 
 ## Архитектура
 
-Проект следует **Feature-Sliced Design** методологии:
+Проект следует **Feature-Sliced Design** с путевыми алиасами (`@/` → `src/`).  
+Каждый слой имеет barrel-файл `index.ts` для чистых импортов.
 
 ```
 src/
-├── app/              # Главное приложение и роутинг
-│   └── App.jsx       # Корневой компонент с Routes
-├── entities/         # Бизнес-сущности и API
-│   ├── AuthApi.js    # API для аутентификации
-│   ├── UserApi.js    # API для пользователей
-│   └── TaskApi.js    # API для задач
-├── features/         # Фичи (формы, функционал)
-│   ├── SignInForm/   # Форма входа
-│   └── SignUpForm/   # Форма регистрации
-├── pages/            # Страницы приложения
-│   ├── HomePage/          # Главная
-│   ├── SignInPage/        # Страница входа
-│   ├── SignUpPage/        # Страница регистрации
-│   ├── ActivatePage/      # Активация аккаунта
-│   ├── UsersPage/         # Список пользователей
-│   ├── CurrentUserPage/   # Просмотр пользователя
-│   ├── ProfilePage/       # Редактирование профиля
-│   ├── TasksPage/         # Все задачи
-│   ├── MyTasksPage/       # Мои задачи
-│   └── NotFoundPage/      # 404 страница не найдена
-├── widgets/          # Составные UI блоки
-│   ├── Nav/          # Навигационное меню
-│   └── UserList/     # Список пользователей
-├── shared/           # Переиспользуемый код
-│   ├── hocs/         # Higher-Order Components
-│   │   ├── AuthGuard.jsx    # Защита приватных роутов
-│   │   └── PublicGuard.jsx  # Защита публичных роутов
-│   ├── lib/          # Библиотеки и утилиты
-│   │   └── axiosInstance.js # Настроенный axios
-│   └── ui/           # UI компоненты
-│       └── Btn/      # Компонент кнопки
-└── main.jsx          # Точка входа приложения
+├── app/
+│   └── App.tsx                  # Корневой компонент, роутинг, состояние user
+├── entities/                    # Бизнес-сущности и API-классы
+│   ├── index.ts                 # export { AuthApi, UserApi, TaskApi }
+│   ├── AuthApi.ts
+│   ├── UserApi.ts
+│   └── TaskApi.ts
+├── features/                    # Функциональные блоки (формы)
+│   ├── index.ts                 # export { SignInForm, SignUpForm }
+│   ├── SignInForm/
+│   └── SignUpForm/
+├── pages/                       # Страницы приложения
+│   ├── index.ts                 # export { HomePage, SignInPage, … }
+│   ├── HomePage/
+│   ├── SignInPage/
+│   ├── SignUpPage/
+│   ├── ActivatePage/
+│   ├── UsersPage/
+│   ├── CurrentUserPage/
+│   ├── ProfilePage/
+│   ├── TasksPage/
+│   ├── MyTasksPage/
+│   └── NotFoundPage/
+├── widgets/                     # Составные UI-блоки
+│   ├── index.ts                 # export { Nav, UserList }
+│   ├── Nav/
+│   └── UserList/
+├── shared/
+│   ├── types/
+│   │   └── index.ts             # User, Task, ApiResponse<T>, AuthData
+│   ├── lib/
+│   │   ├── index.ts             # export { axiosInstance, setAccessToken, useTitle }
+│   │   ├── axiosInstance.ts     # Настроенный axios с interceptors
+│   │   └── useTitle.ts          # Хук для <title>
+│   ├── ui/
+│   │   ├── index.ts             # export { Icon }
+│   │   └── Icon/
+│   └── hocs/
+│       ├── index.ts             # export { AuthGuard, PublicGuard }
+│       ├── AuthGuard.tsx
+│       └── PublicGuard.tsx
+└── main.tsx                     # Точка входа
 ```
 
 ## Установка и запуск
@@ -57,145 +70,113 @@ src/
 # Установка зависимостей
 npm install
 
-# Создать .env файл
-echo "VITE_API_URL=http://localhost:4000/api" > .env
+# Создать .env файл (см. ниже)
 
-# Запуск dev-сервера
+# Запуск dev-сервера (с HMR)
 npm run dev
+
+# Проверка типов
+npm run typecheck
 
 # Сборка для production
 npm run build
 
-# Просмотр production сборки
+# Просмотр production-сборки локально
 npm run preview
 
-# Проверка линтером
+# Линтинг
 npm run lint
 ```
-
-## Ключевые возможности
-
-### Аутентификация и безопасность
-- ✅ **Email-активация аккаунта** - письмо со ссылкой при регистрации
-- ✅ Красивая страница активации с loading/success/error состояниями
-- ✅ Блокировка входа для неактивированных аккаунтов
-- ✅ JWT аутентификация с автоматическим обновлением токенов
-- ✅ Axios interceptors для добавления Authorization header
-- ✅ AuthGuard - защита приватных роутов
-- ✅ PublicGuard - редирект авторизованных с публичных страниц
-- ✅ Автоматический редирект на `/signIn` при истечении токенов
-
-### Управление пользователями
-- ✅ Регистрация с валидацией
-- ✅ Вход в систему
-- ✅ Просмотр списка всех пользователей
-- ✅ Просмотр профиля пользователя
-- ✅ Редактирование своего профиля (имя, email)
-- ✅ Загрузка и обновление аватара (до 1 МБ)
-- ✅ Автоматическая генерация аватара с первой буквой имени
-
-### Управление задачами
-- ✅ Просмотр всех задач
-- ✅ Страница "Мои задачи" с личными задачами
-- ✅ Создание задач
-- ✅ Редактирование задач (только своих)
-- ✅ Удаление задач (только своих)
-- ✅ Переключение статуса задачи (чекбокс)
-- ✅ Статистика задач (всего/выполнено/в процессе)
-
-### UI/UX
-- ✅ Красивый современный UI с Tailwind CSS v4
-- ✅ Полностью адаптивный дизайн
-- ✅ Стильная страница 404 с градиентами и анимациями
-- ✅ Обработка ошибок с уведомлениями
-- ✅ Loading состояния для всех операций
-- ✅ Интерактивные формы с валидацией
-- ✅ Превью изображения перед загрузкой аватара
-
-## Entities (API слой)
-
-Все API запросы инкапсулированы в классы:
-
-### AuthApi
-- `signUp(userData)` - регистрация (отправка email)
-- `activateAccount(token)` - активация аккаунта по токену
-- `signIn(credentials)` - вход (только для активированных)
-- `signOut()` - выход
-- `refreshTokens()` - обновление токенов
-
-### UserApi
-- `getAll()` - получить всех пользователей
-- `getById(id)` - получить пользователя по ID
-- `updateProfile(id, updateData)` - обновить профиль
-- `uploadAvatar(id, formData)` - загрузить аватар
-- `deleteById(id)` - удалить пользователя
-
-### TaskApi
-- `getAll()` - получить все задачи
-- `getById(id)` - получить задачу по ID
-- `getByUserId(userId)` - получить задачи пользователя
-- `create(newTaskData)` - создать задачу
-- `updateById(id, updateData)` - обновить задачу
-- `deleteById(id)` - удалить задачу
-
-## Axios Instance
-
-Настроенный axios (`shared/lib/axiosInstance.js`) с:
-- Базовым URL из переменной окружения `VITE_API_URL`
-- Автоматическим добавлением токена в заголовки
-- Автоматическим обновлением токена при истечении (403 статус)
-- Поддержкой `withCredentials: true` для cookies с refresh token
-- Редиректом на `/signIn` при неудачном обновлении токенов
-
-## Страницы и роуты
-
-| Роут | Компонент | Описание | Защита |
-|------|-----------|----------|--------|
-| `/` | HomePage | Главная страница | - |
-| `/signIn` | SignInPage | Страница входа | PublicGuard |
-| `/signUp` | SignUpPage | Страница регистрации | PublicGuard |
-| `/activate/:token` | ActivatePage | Активация аккаунта по email | - |
-| `/users` | UsersPage | Список пользователей | - |
-| `/users/:id` | CurrentUserPage | Профиль пользователя | - |
-| `/profile` | ProfilePage | Редактирование профиля | AuthGuard |
-| `/tasks` | TasksPage | Все задачи | - |
-| `/my-tasks` | MyTasksPage | Мои задачи | AuthGuard |
-| `*` | NotFoundPage | 404 - Страница не найдена | - |
-
-## Guards (HOCs)
-
-### AuthGuard
-Защищает приватные роуты. Если пользователь не авторизован, редиректит на `/signIn`.
-
-### PublicGuard
-Защищает публичные роуты (вход/регистрация). Если пользователь уже авторизован, редиректит на `/`.
 
 ## Переменные окружения
 
 Создайте файл `.env` в корне папки `client`:
 
 ```env
-# API сервера
+# URL API бэкенда
 VITE_API_URL=http://localhost:4000/api
 
 # URL сервера для загрузки файлов (аватары)
 VITE_SERVER_URL=http://localhost:4000
 ```
 
-## Особенности
+## Страницы и роуты
 
-### Загрузка аватаров
-- Поддерживаемые форматы: JPEG, PNG, GIF, WEBP
-- Максимальный размер: 1 МБ
-- Превью перед загрузкой
-- Автоматическое отображение первой буквы имени если нет аватара
+| Роут | Компонент | Описание | Защита |
+|------|-----------|----------|--------|
+| `/` | HomePage | Главная страница | — |
+| `/signIn` | SignInPage | Страница входа | PublicGuard |
+| `/signUp` | SignUpPage | Страница регистрации | PublicGuard |
+| `/activate/:token` | ActivatePage | Активация аккаунта по email | — |
+| `/users` | UsersPage | Список всех пользователей | — |
+| `/users/:id` | CurrentUserPage | Профиль пользователя | — |
+| `/profile` | ProfilePage | Редактирование своего профиля | AuthGuard |
+| `/tasks` | TasksPage | Все задачи (community board) | AuthGuard |
+| `/my-tasks` | MyTasksPage | Личные задачи | AuthGuard |
+| `*` | NotFoundPage | 404 | — |
 
-### Управление состоянием
-- Локальное состояние через `useState`
-- Глобальное состояние пользователя в `App.jsx`
-- Проброс через props (без Redux/Context)
+## Entities (API-слой)
 
-### Обработка ошибок
-- Централизованная через axios interceptors
-- Уведомления об ошибках на каждой странице
-- Автоматическая обработка 403 (истечение токена)
+Все запросы инкапсулированы в статические классы с полной типизацией.
+
+### AuthApi
+- `signUp(data)` — регистрация, отправка письма активации
+- `activateAccount(token)` — активация по токену из email
+- `signIn(data)` — вход (только активированные аккаунты)
+- `signOut()` — выход, очистка cookies
+- `refreshTokens()` — обновление access + refresh токенов
+
+### UserApi
+- `getAll()` — получить всех пользователей
+- `getById(id)` — получить пользователя по ID
+- `updateProfile(id, data)` — обновить имя / email
+- `uploadAvatar(id, formData)` — загрузить аватар
+- `deleteById(id)` — удалить пользователя
+
+### TaskApi
+- `getAll()` — получить все задачи
+- `getById(id)` — получить задачу по ID
+- `getByUserId(userId)` — задачи конкретного пользователя
+- `create(data)` — создать задачу
+- `updateById(id, data)` — обновить задачу (только владелец)
+- `deleteById(id)` — удалить задачу (только владелец)
+
+## Типы (`shared/types`)
+
+```ts
+interface User       { id; name; email; avatar; isActivated; ... }
+interface Task       { id; title; status; user_id; User?; ... }
+interface ApiResponse<T = null> { statusCode; message; data: T; error }
+interface AuthData   { user: User; accessToken: string }
+```
+
+## Axios Instance
+
+`shared/lib/axiosInstance.ts`:
+- Базовый URL из `VITE_API_URL`
+- `withCredentials: true` (передача httpOnly cookies)
+- Request interceptor — добавляет `Authorization: Bearer <token>`
+- Response interceptor — при 403 автоматически обновляет токен через `/refreshTokens`, повторяет исходный запрос; при неудаче — редирект на `/signIn`
+
+## Guards (HOC)
+
+- **AuthGuard** — приватные роуты; если нет авторизации → редирект на `/signIn`
+- **PublicGuard** — публичные роуты (вход/регистрация); если авторизован → редирект на `/`
+
+## Ключевые возможности
+
+### TypeScript
+- Строгий режим (`strict: true`)
+- Путевые алиасы `@/` → `src/` (в `tsconfig.json` и `vite.config.ts`)
+- Полная типизация API-ответов через `ApiResponse<T>`
+
+### UI/UX
+- Кастомная дизайн-система (CSS-переменные, тёмная тема)
+- Адаптивная вёрстка (mobile-first)
+- Анимации появления контента
+- Динамический `<title>` страницы через `useTitle`
+- Loading-спиннеры для всех async-операций
+- Flash-уведомления (success / error)
+- Превью аватара перед загрузкой
+- Статистика задач (всего / выполнено / в процессе)
+- Inline-редактирование задач (Enter — сохранить, Escape — отмена)

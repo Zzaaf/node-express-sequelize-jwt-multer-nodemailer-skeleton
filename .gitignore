@@ -50,3 +50,5 @@ coverage/
 *.temp
 .cache/
 
+# Claude
+.claude/

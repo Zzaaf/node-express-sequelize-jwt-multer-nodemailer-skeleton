@@ -1,18 +1,18 @@
 const nodemailer = require('nodemailer');
 
-// Конфигурация транспорта для отправки писем
+const port = parseInt(process.env.SMTP_PORT) || 465;
+
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: process.env.SMTP_PORT || 587,
-    secure: false, // true для 465, false для других портов
+    host: process.env.SMTP_HOST || 'smtp.yandex.ru',
+    port,
+    secure: port === 465,
     auth: {
-        user: process.env.SMTP_USER, // ваш email
-        pass: process.env.SMTP_PASSWORD // пароль приложения
-    }
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+    },
 });
 
-// Проверка подключения при запуске
-transporter.verify((error, success) => {
+transporter.verify((error) => {
     if (error) {
         console.error('❌ SMTP connection error:', error.message);
     } else {
@@ -21,4 +21,3 @@ transporter.verify((error, success) => {
 });
 
 module.exports = transporter;
-

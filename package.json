@@ -1,0 +1,18 @@
+{
+  "name": "jwt-auth-skeleton",
+  "version": "1.0.0",
+  "description": "JWT Authentication Demo Skeleton — Node.js/Express + React/TypeScript",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "install:server": "npm install --prefix server",
+    "install:client": "npm install --prefix client",
+    "build:client": "npm run build --prefix client",
+    "build": "npm run install:server && npm run install:client && npm run build:client",
+    "start": "npm start --prefix server",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client"
+  }
+}
